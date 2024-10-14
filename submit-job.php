@@ -1,15 +1,15 @@
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Sanitize and trim user inputs
-    $jobTitle = htmlspecialchars(trim($_POST['job-title']));
-    $companyName = htmlspecialchars(trim($_POST['company-name']));
-    $jobLocation = htmlspecialchars(trim($_POST['job-location']));
-    $jobDescription = htmlspecialchars(trim($_POST['job-description']));
-    $salary = htmlspecialchars(trim($_POST['salary']));
-    $jobType = isset($_POST['job-type']) ? htmlspecialchars(trim($_POST['job-type'])) : "Not specified"; // Optional field
+    $firstName = htmlspecialchars(trim($_POST['first-name']));
+    $lastName = htmlspecialchars(trim($_POST['last-name']));
+    $email = htmlspecialchars(trim($_POST['email']));
+    $homeAddress = htmlspecialchars(trim($_POST['home-address']));
+    $shoeSize = (int) htmlspecialchars(trim($_POST['shoe-size']));
+    $sizingGender = htmlspecialchars(trim($_POST['sizing-gender']));
 
     // Check for empty required fields
-    if (empty($jobTitle) || empty($companyName) || empty($jobLocation) || empty($jobDescription) || empty($salary)) {
+    if (empty($firstName) || empty($lastName) || empty($email) || empty($homeAddress) || empty($shoeSize) || empty($sizingGender)) {
         echo "<h4 style='color: red;'>All required fields must be filled.</h4>";
         exit();
     }
@@ -18,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $servername = "localhost";
     $username = "root";  // Default username for MAMP
     $password = "root";  // Default password for MAMP
-    $dbname = "jobposting"; // Your database name
+    $dbname = "customers_db"; // Your database name
 
     // Create a connection to the database
     $conn = new mysqli($servername, $username, $password, $dbname);
@@ -28,16 +28,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         die("Connection failed: " . $conn->connect_error);
     }
 
-    // Prepared SQL query to insert the form data into the 'jobs' table
-    $stmt = $conn->prepare("INSERT INTO jobs (job_title, company_name, job_location, job_description, job_type, salary) VALUES (?, ?, ?, ?, ?, ?)");
+    // Prepared SQL query to insert the form data into the 'customers' table
+    $stmt = $conn->prepare("INSERT INTO CUSTOMERS (first_name, last_name, email, home_address, shoe_size, sizing_gender) VALUES (?, ?, ?, ?, ?, ?)");
 
     // Bind parameters to the SQL query
-    $stmt->bind_param("ssssss", $jobTitle, $companyName, $jobLocation, $jobDescription, $jobType, $salary);
+    $stmt->bind_param($firstName, $lastName, $email, $homeAddress, $shoeSize, $sizingGender);
 
     // Execute the query and check if it was successful
     if ($stmt->execute()) {
         // If successful, display a success message
-        echo "<h4 style='color: green;'>Job posting submitted successfully!</h4>";
+        echo "<h4 style='color: green;'>Customer registered successfully!</h4>";
     } else {
         // If there was an error, display the error message
         echo "<h4 style='color: red;'>Error: " . $stmt->error . "</h4>";
