@@ -32,8 +32,8 @@
 
     echo "DB connection established!";
 
-    $sql = "INSERT INTO CUSTOMERS (Customer_ID, First_name, Last_name, Email, Home_address, Shoe_size, Sizing_gender)
-            VALUES ( 1,'$first_name', '$last_name', '$email',  '$address', $shoe_size, '$gender')";
+    $sql = "INSERT INTO CUSTOMERS (First_name, Last_name, Email, Home_address, Shoe_size, Sizing_gender)
+            VALUES ('$first_name', '$last_name', '$email',  '$address', $shoe_size, '$gender')";
 
     
 
