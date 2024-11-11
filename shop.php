@@ -5,21 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shop - Shoe Website</title>
     <link rel="stylesheet" href="/Shoes%20web/styles.css"> 
-
 </head>
 <body>
     <header>
-    <header>
         <div class="logo">WearWhen</div>
         <nav>
-            <a href="index.htl">Home</a>
+            <a href="index.html">Home</a>
             <a href="shop.html">Shop</a>
             <a href="wishlist.html">Wishlist</a>
             <a href="profile.html">Profile</a>
-            <a href="cart.html">Cart</a>
+            <a href="cart.php">Cart</a>
         </nav>
-    </header>
-
     </header>
 
     <!-- Filter Sidebar and Product Grid -->
@@ -60,7 +56,7 @@
             }
 
             // SQL query to retrieve shoe data
-            $sql = "SELECT brand, type, size, color, price, reviews, sizing, number_in_stock, shoes_link FROM Shoes";
+            $sql = "SELECT shoe_id, brand, type, size, color, price, reviews, sizing, number_in_stock, shoes_link FROM Shoes";
             $result = $conn->query($sql);
 
             // Check if results are returned
@@ -72,21 +68,19 @@
                     echo "<p><strong>Size:</strong> " . htmlspecialchars($row['size']) . "</p>";
                     echo "<p><strong>Color:</strong> " . htmlspecialchars($row['color']) . "</p>";
                     echo "<p><strong>Price:</strong> $" . htmlspecialchars($row['price']) . "</p>";
-                    echo "<p><strong>Reviews:</strong> " . htmlspecialchars($row['reviews']) . "</p>";
-                    echo "<p><strong>Sizing:</strong> " . htmlspecialchars($row['sizing']) . "</p>";
-                    echo "<p><strong>In Stock:</strong> " . htmlspecialchars($row['number_in_stock']) . "</p>";
-                    
-                    // Adjust the image path based on where the image is stored
-                    if (!empty($row['shoes_link'])) {
-                        // Using htmlspecialchars for security
-                        $imagePath = "http://localhost:8888/" . htmlspecialchars($row['shoes_link']);
-                        echo "<img src='$imagePath' alt='" . htmlspecialchars($row['brand'] . " " . $row['type']) . "' style='width:200px; height:auto;'/>";  
-                    } else {
-                        echo "<p>No image available</p>";
-                    }
 
-                   
-                } else {
+                    $imagePath = "http://localhost:8888/" . htmlspecialchars($row['shoes_link']);
+                    echo "<img src='$imagePath' alt='" . htmlspecialchars($row['brand'] . " " . $row['type']) . "' style='width:200px; height:auto;'/>";
+
+                    // Add to Cart form
+                    echo "<form action='add_to_cart.php' method='POST'>";
+                    echo "<input type='hidden' name='shoe_id' value='" . htmlspecialchars($row['shoe_id']) . "'>";
+                    echo "<button type='submit' class='add-to-cart'>Add to Cart</button>";
+                    echo "</form>";
+
+                    echo "</div><hr>";
+                }
+            } else {
                 echo "No results found.";
             }
 
@@ -97,7 +91,7 @@
     </section>
 
     <footer>
-    <p>&copy; 2024 ShoeBrand. All rights reserved.</p>
+        <p>&copy; 2024 ShoeBrand. All rights reserved.</p>
         <nav>
             <a href="about.html">About Us</a>
             <a href="contact.html">Contact</a>
